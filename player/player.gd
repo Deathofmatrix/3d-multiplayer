@@ -10,6 +10,17 @@ class_name Player
 @export var stopping_speed := 1.0
 @export var sync_delta_max := 1.0
 
+@onready var _rotation_root: Node3D = $CharacterRotationRoot
+#@onready var _camera_controller: CameraController = $CameraController
+@onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
+#@onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
+@onready var _synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
+
+@onready var _move_direction := Vector3.ZERO
+@onready var _last_strong_direction := Vector3.FORWARD
+@onready var _gravity: float = -30.0
+@onready var _ground_height: float = 0.0
+
 ## Sync properties
 @export var _position: Vector3
 @export var _velocity: Vector3
@@ -21,24 +32,141 @@ var position_before_sync: Vector3
 var last_sync_time_ms: int
 var sync_delta: float
 
+func _ready() -> void:
+	if is_multiplayer_authority():
+		#_camera_controller.setup(self)
+		pass
+	else:
+		rotation_speed /= 1.5
+		_synchronizer.delta_synchronized.connect(on_synchronized)
+		_synchronizer.synchronized.connect(on_synchronized)
+		on_synchronized()
+
+
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	#if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		#velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	#var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	#if direction:
-		#velocity.x = direction.x * SPEED
-		#velocity.z = direction.z * SPEED
-	#else:
-		#velocity.x = move_toward(velocity.x, 0, SPEED)
-		#velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	if not is_multiplayer_authority(): interpolate_client(delta); return
+	
+	# Get input and movement state
+	var is_just_jumping := Input.is_action_just_pressed("jump") and is_on_floor()
+	var is_air_boosting := Input.is_action_pressed("jump") and not is_on_floor() and velocity.y > 0.0
+	
+	_move_direction = _get_camera_oriented_input()
+	
+	#if EditMode.is_enabled:
+		#is_just_jumping = false
+		#is_air_boosting = false
+		#_move_direction = Vector3.ZERO
+	
+	if _move_direction.length() > 0.2:
+		_last_strong_direction = _move_direction.normalized()
+	
+	_orient_character_to_direction(_last_strong_direction, delta)
+	
+	
+	var y_velocity := velocity.y
+	velocity.y = 0.0
+	velocity = velocity.lerp(_move_direction * move_speed, acceleration * delta)
+	if _move_direction.length() == 0 and velocity.length() < stopping_speed:
+		velocity = Vector3.ZERO
+	velocity.y = y_velocity
+	
+	# Update position
+	
+	velocity.y += _gravity * delta
+	
+	if is_just_jumping:
+		velocity.y += jump_initial_impulse
+	elif is_air_boosting:
+		velocity.y += jump_additional_force * delta
+	
+	## Set character animation
+	#if is_just_jumping:
+		#_character_skin.jump.rpc()
+	#elif not is_on_floor() and velocity.y < 0:
+		#_character_skin.fall.rpc()
+	#elif is_on_floor():
+		#var xz_velocity := Vector3(velocity.x, 0, velocity.z)
+		#if xz_velocity.length() > stopping_speed:
+			#_character_skin.set_moving.rpc(true)
+			#_character_skin.set_moving_speed.rpc(inverse_lerp(0.0, move_speed, xz_velocity.length()))
+		#else:
+			#_character_skin.set_moving.rpc(false)
+	
+	var position_before := global_position
 	move_and_slide()
+	var position_after := global_position
+	
+	# If velocity is not 0 but the difference of positions after move_and_slide is,
+	# character might be stuck somewhere!
+	var delta_position := position_after - position_before
+	var epsilon := 0.001
+	if delta_position.length() < epsilon and velocity.length() > epsilon:
+		global_position += get_wall_normal() * 0.1
+	
+	set_sync_properties()
+
+
+func set_sync_properties() -> void:
+	_position = position
+	_velocity = velocity
+	_direction = _move_direction
+	_strong_direction = _last_strong_direction
+	
+	move_and_slide()
+
+
+func on_synchronized() -> void:
+	velocity = _velocity
+	position_before_sync = position
+	
+	var sync_time_ms = Time.get_ticks_msec()
+	sync_delta = clampf(float(sync_time_ms - last_sync_time_ms) / 1000, 0, sync_delta_max)
+	last_sync_time_ms = sync_time_ms
+
+
+func interpolate_client(delta: float) -> void:
+	_orient_character_to_direction(_strong_direction, delta)
+	
+	if _direction.length() == 0:
+		# Don't interpolate to avoid small jitter when stopping
+		if (_position - position).length() > 1.0 and _velocity.is_zero_approx():
+			position = _position # Fix misplacement
+	else:
+		# Interpolate between position_before_sync and _position
+		# and add to ongoing movement to compensate misplacement
+		var t = 1.0 if is_zero_approx(sync_delta) else delta / sync_delta
+		sync_delta = clampf(sync_delta - delta, 0, sync_delta_max)
+		
+		var less_misplacement = position_before_sync.move_toward(_position, t)
+		position += less_misplacement - position_before_sync
+		position_before_sync = less_misplacement
+	
+	velocity.y += _gravity * delta
+	move_and_slide()
+
+func _get_camera_oriented_input() -> Vector3:
+	var raw_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	var input := Vector3.ZERO
+	# This is to ensure that diagonal input isn't stronger than axis aligned input
+	input.x = -raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
+	input.z = -raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
+	
+	#input = _camera_controller.global_transform.basis * input
+	input.y = 0.0
+	return input
+
+
+func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
+	var left_axis := Vector3.UP.cross(direction)
+	var rotation_basis := Basis(left_axis, Vector3.UP, direction).get_rotation_quaternion()
+	var model_scale := _rotation_root.transform.basis.get_scale()
+	_rotation_root.transform.basis = Basis(_rotation_root.transform.basis.get_rotation_quaternion().slerp(rotation_basis, delta * rotation_speed)).scaled(
+		model_scale
+	)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func respawn(spawn_position: Vector3) -> void:
+	global_position = spawn_position
+	velocity = Vector3.ZERO
