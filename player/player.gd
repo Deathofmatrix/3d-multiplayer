@@ -11,8 +11,8 @@ class_name Player
 @export var sync_delta_max := 1.0
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
-#@onready var _camera_controller: CameraController = $CameraController
-@onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
+@onready var _camera_controller: CameraController = $CameraController
+#@onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
 #@onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
 @onready var _synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
@@ -34,8 +34,7 @@ var sync_delta: float
 
 func _ready() -> void:
 	if is_multiplayer_authority():
-		#_camera_controller.setup(self)
-		pass
+		_camera_controller.setup(self)
 	else:
 		rotation_speed /= 1.5
 		_synchronizer.delta_synchronized.connect(on_synchronized)
@@ -149,10 +148,10 @@ func _get_camera_oriented_input() -> Vector3:
 	
 	var input := Vector3.ZERO
 	# This is to ensure that diagonal input isn't stronger than axis aligned input
-	input.x = -raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
-	input.z = -raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
+	input.x = raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
+	input.z = raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
 	
-	#input = _camera_controller.global_transform.basis * input
+	input = _camera_controller.transform.basis * input
 	input.y = 0.0
 	return input
 

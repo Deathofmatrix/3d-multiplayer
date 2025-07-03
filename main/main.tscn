@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://df2rhbwpx0qh0"]
+[gd_scene load_steps=13 format=3 uid="uid://df2rhbwpx0qh0"]
 
 [ext_resource type="Script" uid="uid://eom8s47pqd77" path="res://main/connection.gd" id="1_53q0u"]
+[ext_resource type="Script" uid="uid://l3rko83ulklp" path="res://main/main.gd" id="1_kfbq2"]
 [ext_resource type="Texture2D" uid="uid://bdt1so3n2npfa" path="res://icon.svg" id="2_pjrb6"]
 [ext_resource type="Script" uid="uid://7c0ilfw4cm5i" path="res://main/player_spawner.gd" id="2_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://bquh88mq3a01e" path="res://player/player.tscn" id="3_3wy1v"]
@@ -29,6 +30,7 @@ size = Vector3(100, 1, 100)
 data = PackedVector3Array(-50, 0.5, 50, 50, 0.5, 50, -50, -0.5, 50, 50, 0.5, 50, 50, -0.5, 50, -50, -0.5, 50, 50, 0.5, -50, -50, 0.5, -50, 50, -0.5, -50, -50, 0.5, -50, -50, -0.5, -50, 50, -0.5, -50, 50, 0.5, 50, 50, 0.5, -50, 50, -0.5, 50, 50, 0.5, -50, 50, -0.5, -50, 50, -0.5, 50, -50, 0.5, -50, -50, 0.5, 50, -50, -0.5, -50, -50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, 50, -50, 0.5, 50, 50, 0.5, -50, -50, 0.5, 50, -50, 0.5, -50, 50, 0.5, -50, -50, -0.5, 50, 50, -0.5, 50, -50, -0.5, -50, 50, -0.5, 50, 50, -0.5, -50, -50, -0.5, -50)
 
 [node name="Main" type="Node"]
+script = ExtResource("1_kfbq2")
 
 [node name="Connection" type="Node" parent="."]
 script = ExtResource("1_53q0u")

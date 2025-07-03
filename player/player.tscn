@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bquh88mq3a01e"]
+[gd_scene load_steps=7 format=3 uid="uid://bquh88mq3a01e"]
 
 [ext_resource type="Script" uid="uid://36lan8p4yobd" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://qvh2c3cr0tnq" path="res://player/camera_controller.gd" id="2_g1dw6"]
 [ext_resource type="Script" uid="uid://xjhut8lj777t" path="res://player/player_camera.gd" id="2_rkbax"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kqu6x"]
@@ -28,8 +29,12 @@ script = ExtResource("1_oul6g")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_kqu6x")
 
-[node name="PlayerCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3103, 2.49659)
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45481, 0)
+script = ExtResource("2_g1dw6")
+
+[node name="PlayerCamera" type="Camera3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0678487, 0)
 fov = 99.4511
 script = ExtResource("2_rkbax")
 
