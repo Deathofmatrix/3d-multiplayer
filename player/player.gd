@@ -128,8 +128,9 @@ func interpolate_client(delta: float) -> void:
 	
 	if _direction.length() == 0:
 		# Don't interpolate to avoid small jitter when stopping
-		if (_position - position).length() > 1.0 and _velocity.is_zero_approx():
-			position = _position # Fix misplacement
+		#if (_position - position).length() > 1.0 and _velocity.is_zero_approx():
+			#position = _position # Fix misplacement
+		position = position.lerp(_position, 0.1)
 	else:
 		# Interpolate between position_before_sync and _position
 		# and add to ongoing movement to compensate misplacement

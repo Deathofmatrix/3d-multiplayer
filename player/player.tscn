@@ -35,7 +35,7 @@ script = ExtResource("2_g1dw6")
 
 [node name="PlayerCamera" type="Camera3D" parent="CameraController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0678487, 0)
-fov = 99.4511
+fov = 80.0
 script = ExtResource("2_rkbax")
 
 [node name="CharacterRotationRoot" type="Node3D" parent="."]
