@@ -110,8 +110,6 @@ func set_sync_properties() -> void:
 	_velocity = velocity
 	_direction = _move_direction
 	_strong_direction = _last_strong_direction
-	
-	move_and_slide()
 
 
 func on_synchronized() -> void:
@@ -128,9 +126,8 @@ func interpolate_client(delta: float) -> void:
 	
 	if _direction.length() == 0:
 		# Don't interpolate to avoid small jitter when stopping
-		#if (_position - position).length() > 1.0 and _velocity.is_zero_approx():
-			#position = _position # Fix misplacement
-		position = position.lerp(_position, 0.1)
+		if (_position - position).length() > 1.0 and _velocity.is_zero_approx():
+			position = _position # Fix misplacement
 	else:
 		# Interpolate between position_before_sync and _position
 		# and add to ongoing movement to compensate misplacement
@@ -143,6 +140,7 @@ func interpolate_client(delta: float) -> void:
 	
 	velocity.y += _gravity * delta
 	move_and_slide()
+
 
 func _get_camera_oriented_input() -> Vector3:
 	var raw_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
