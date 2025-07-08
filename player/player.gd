@@ -31,7 +31,6 @@ func _ready() -> void:
 
 func _on_sync() -> void:
 	velocity = _velocity
-	rotation = _direction
 
 
 
