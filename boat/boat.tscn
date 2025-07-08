@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://btlyoo23b6r12"]
+[gd_scene load_steps=14 format=3 uid="uid://btlyoo23b6r12"]
 
 [ext_resource type="Script" uid="uid://p5akh8ts3i7c" path="res://boat/boat.gd" id="1_jbc2f"]
 [ext_resource type="Script" uid="uid://dq15jugln2akt" path="res://boat/motor.gd" id="2_enlnh"]
@@ -36,9 +36,8 @@ size = Vector3(0.8, 0.7, 0.7)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kgk83"]
 points = PackedVector3Array(0.4, 0.349932, 0.349932, 0.4, 0.349932, -0.35, -0.4, 0.349932, 0.349932, 0.4, -0.35, 0.349932, 0.4, -0.35, -0.35, -0.4, 0.349932, -0.35, -0.4, -0.35, 0.349932, -0.4, -0.35, -0.35)
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_enlnh"]
-
 [node name="Boat" type="RigidBody3D"]
+transform = Transform3D(-8.73049e-05, 0, -1, 0, 1, 0, 1, 0, -8.73049e-05, 0, 0, 0)
 script = ExtResource("1_jbc2f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -91,6 +90,3 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Motor"]
 shape = SubResource("ConvexPolygonShape3D_kgk83")
 debug_color = Color(0.988235, 0, 0.321569, 1)
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_enlnh")

@@ -23,6 +23,12 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath(".:_strong_direction")
 properties/3/spawn = true
 properties/3/replication_mode = 1
+properties/4/path = NodePath("CameraController/PlayerCamera/MeshInstance3D:position")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("CameraController/PlayerCamera/MeshInstance3D2:position")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 top_level = true
@@ -30,7 +36,6 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_oul6g")
-sync_delta_max = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
