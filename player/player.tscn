@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bquh88mq3a01e"]
+[gd_scene load_steps=9 format=3 uid="uid://bquh88mq3a01e"]
 
 [ext_resource type="Script" uid="uid://36lan8p4yobd" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://qvh2c3cr0tnq" path="res://player/camera_controller.gd" id="2_g1dw6"]
 [ext_resource type="Script" uid="uid://xjhut8lj777t" path="res://player/player_camera.gd" id="2_rkbax"]
+[ext_resource type="Script" uid="uid://ctjx3k16l3rbx" path="res://player/player_controller.gd" id="4_qjkh3"]
+[ext_resource type="Script" uid="uid://vnmft3qnkhg" path="res://player/player_input.gd" id="5_g6k8r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kqu6x"]
 
@@ -43,6 +45,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0678487, 0)
 fov = 80.0
 script = ExtResource("2_rkbax")
 
+[node name="InteractRayCast" type="RayCast3D" parent="CameraController/PlayerCamera"]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
+target_position = Vector3(0, 5, 0)
+collision_mask = 15
+collide_with_areas = true
+
 [node name="CharacterRotationRoot" type="Node3D" parent="."]
 
 [node name="CharacterSkin" type="MeshInstance3D" parent="CharacterRotationRoot"]
@@ -51,3 +59,9 @@ mesh = SubResource("CapsuleMesh_oul6g")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_rkbax")
+
+[node name="PlayerController" type="Node" parent="."]
+script = ExtResource("4_qjkh3")
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("5_g6k8r")

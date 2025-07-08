@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://df2rhbwpx0qh0"]
+[gd_scene load_steps=14 format=3 uid="uid://df2rhbwpx0qh0"]
 
 [ext_resource type="Script" uid="uid://eom8s47pqd77" path="res://main/connection.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://l3rko83ulklp" path="res://main/main.gd" id="1_kfbq2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://7c0ilfw4cm5i" path="res://main/player_spawner.gd" id="2_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://bquh88mq3a01e" path="res://player/player.tscn" id="3_3wy1v"]
 [ext_resource type="Script" uid="uid://bg80j3gpnj2da" path="res://main/spawn_points.gd" id="5_kfbq2"]
+[ext_resource type="PackedScene" uid="uid://btlyoo23b6r12" path="res://boat/boat.tscn" id="7_4dugh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3wy1v"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -78,5 +79,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 0)
 
 [node name="Node3D4" type="Node3D" parent="TestLevel/SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.89854)
+
+[node name="Boat" parent="TestLevel" instance=ExtResource("7_4dugh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4603, 1, 4)
 
 [connection signal="server_created" from="Connection" to="PlayerSpawner" method="_on_server_created"]

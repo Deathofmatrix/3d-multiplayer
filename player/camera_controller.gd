@@ -9,6 +9,7 @@ class_name CameraController
 @export var tilt_lower_limit := deg_to_rad(-80.0)
 
 @onready var camera: Camera3D = $PlayerCamera
+@onready var interact_ray_cast: RayCast3D = $PlayerCamera/InteractRayCast
 
 var _rotation_input: float
 var _tilt_input: float
@@ -56,3 +57,7 @@ func _physics_process(delta: float) -> void:
 func setup(anchor: CharacterBody3D) -> void:
 	_anchor = anchor
 	_offset = global_transform.origin - anchor.global_transform.origin
+
+
+func get_interact_ray() -> RayCast3D:
+	return interact_ray_cast

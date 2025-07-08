@@ -15,6 +15,7 @@ class_name Player
 #@onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
 #@onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
 @onready var _synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
+@onready var interact_ray_cast: RayCast3D = $CameraController/PlayerCamera/InteractRayCast
 
 @onready var _move_direction := Vector3.ZERO
 @onready var _last_strong_direction := Vector3.FORWARD
@@ -27,10 +28,14 @@ class_name Player
 @export var _direction: Vector3 = Vector3.ZERO
 @export var _strong_direction: Vector3 = Vector3.FORWARD
 
+var is_steering_boat: bool = false
+var current_interactable: Node
+
 var position_before_sync: Vector3
 
 var last_sync_time_ms: int
 var sync_delta: float
+
 
 func _ready() -> void:
 	if is_multiplayer_authority():
@@ -42,6 +47,30 @@ func _ready() -> void:
 		on_synchronized()
 
 
+func _process(delta: float) -> void:
+	if is_steering_boat: return
+	if interact_ray_cast.is_colliding():
+		var collider: Object = interact_ray_cast.get_collider()
+		if collider is not Node: return
+		if not collider.is_in_group("interactable"): return
+		print(collider.name)
+		current_interactable = collider
+		if collider.has_method("interact"):
+			print("hasmethod")
+			if Input.is_action_just_pressed("interact"):
+				collider.interact(self)
+		else:
+			pass
+			#pick up item
+	else:
+		current_interactable = null
+
+
+func _input(event: InputEvent) -> void:
+	if is_steering_boat and event.is_action_pressed("interact"):
+		is_steering_boat = false
+
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): interpolate_client(delta); return
 	
@@ -51,16 +80,10 @@ func _physics_process(delta: float) -> void:
 	
 	_move_direction = _get_camera_oriented_input()
 	
-	#if EditMode.is_enabled:
-		#is_just_jumping = false
-		#is_air_boosting = false
-		#_move_direction = Vector3.ZERO
-	
 	if _move_direction.length() > 0.2:
 		_last_strong_direction = _move_direction.normalized()
 	
 	_orient_character_to_direction(_last_strong_direction, delta)
-	
 	
 	var y_velocity := velocity.y
 	velocity.y = 0.0
@@ -105,6 +128,12 @@ func _physics_process(delta: float) -> void:
 	set_sync_properties()
 
 
+func steer_boat(pos :Vector3):
+	is_steering_boat = true
+	position = pos
+	
+
+
 func set_sync_properties() -> void:
 	_position = position
 	_velocity = velocity
@@ -143,6 +172,7 @@ func interpolate_client(delta: float) -> void:
 
 
 func _get_camera_oriented_input() -> Vector3:
+	if is_steering_boat: return Vector3.ZERO
 	var raw_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	var input := Vector3.ZERO
