@@ -19,6 +19,8 @@ var move_direction: Vector3 = Vector3.ZERO
 var jump_requested : bool = false
 
 func _ready() -> void:
+	PlayerRegistry.register_player(get_multiplayer_authority(), self)
+	
 	if is_multiplayer_authority():
 		player_input.set_process(true)
 		_camera_controller.setup(self)
@@ -32,7 +34,8 @@ func _ready() -> void:
 func _on_sync() -> void:
 	velocity = _velocity
 
-
+func _exit_tree() -> void:
+	PlayerRegistry.unregister_player(get_multiplayer_authority())
 
 #
 #

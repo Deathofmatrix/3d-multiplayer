@@ -1,5 +1,5 @@
 extends Area3D
 
-func interact(interacting_player: Player):
+func interact(interacting_player_id: int):
 	print("interacting")
-	$"..".interact(interacting_player)
+	$"..".interact(interacting_player_id)

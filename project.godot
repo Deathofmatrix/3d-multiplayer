@@ -15,6 +15,10 @@ run/main_scene="uid://df2rhbwpx0qh0"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+PlayerRegistry="*res://autoload/player_registry.gd"
+
 [global_group]
 
 interactable=""

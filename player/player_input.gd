@@ -35,7 +35,7 @@ func _try_interact():
 	if ray.is_colliding():
 		var collider = ray.get_collider()
 		if collider and collider.has_method("interact"):
-			collider.interact(player)
+			collider.interact(get_multiplayer_authority())
 
 
 func _handle_boat_input():
@@ -46,8 +46,10 @@ func _handle_boat_input():
 	var steering = Input.get_axis("move_right", "move_left")
 	
 	if boat_ref:
-		boat_ref.set_drive_input.rpc(throttle, steering)
-		print("Boat authority:", boat_ref.get_multiplayer_authority())
+		if multiplayer.is_server():
+			boat_ref.set_drive_input.rpc(throttle, steering)
+		else:
+			boat_ref.set_drive_input.rpc_id(1, throttle, steering)
 
 
 func enter_boat(boat: Boat):
@@ -56,7 +58,11 @@ func enter_boat(boat: Boat):
 
 
 func _exit_boat():
+	print("exit boat")
 	if boat_ref:
-		boat_ref.clear_driver.rpc()
+		if multiplayer.is_server():
+			boat_ref._clear_driver()
+		else:
+			boat_ref.request_clear_driver.rpc_id(1)
 	boat_ref = null
 	mode = Mode.ON_FOOT
