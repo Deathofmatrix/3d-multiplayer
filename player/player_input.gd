@@ -46,13 +46,11 @@ func _handle_boat_input():
 	var steering = Input.get_axis("move_right", "move_left")
 	
 	if boat_ref:
-		if multiplayer.is_server():
-			boat_ref.set_drive_input.rpc(throttle, steering)
-		else:
-			boat_ref.set_drive_input.rpc_id(1, throttle, steering)
+		boat_ref.set_drive_input.rpc(throttle, steering)
 
 
 func enter_boat(boat: Boat):
+	print(multiplayer.get_unique_id(), " entering boat ")
 	mode = Mode.DRIVING_BOAT
 	boat_ref = boat
 
@@ -60,9 +58,6 @@ func enter_boat(boat: Boat):
 func _exit_boat():
 	print("exit boat")
 	if boat_ref:
-		if multiplayer.is_server():
-			boat_ref._clear_driver()
-		else:
-			boat_ref.request_clear_driver.rpc_id(1)
+		boat_ref._clear_driver()
 	boat_ref = null
 	mode = Mode.ON_FOOT

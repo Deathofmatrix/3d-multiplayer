@@ -16,18 +16,14 @@ func _ready() -> void:
 func interact(player_id: int):
 	if current_driver_peer_id != -1:
 		return
-	if multiplayer.is_server():
-		_assign_driver(player_id)
-	else:
-		request_assign_driver.rpc_id(1, player_id)
+	assign_driver.rpc(player_id)
 
 
-@rpc("any_peer", "reliable")
-func request_assign_driver(requesting_peer_id: int):
-	_assign_driver(requesting_peer_id)
-
-
-func _assign_driver(driver_peer_id: int):
+@rpc("any_peer", "call_local", "reliable")
+func assign_driver(driver_peer_id: int):
+	print("assigning driver")
+	if not multiplayer.is_server(): return
+	
 	current_driver_peer_id = driver_peer_id
 	print("Driver assigned!", current_driver_peer_id)
 	
@@ -38,6 +34,8 @@ func _assign_driver(driver_peer_id: int):
 
 @rpc("any_peer", "call_local")
 func set_drive_input(throttle_input: float, steering_input: float):
+	if not multiplayer.is_server(): return
+	
 	if multiplayer.get_remote_sender_id() != current_driver_peer_id:
 		print("❌ Invalid sender:", multiplayer.get_remote_sender_id(), current_driver_peer_id)
 		return
@@ -45,12 +43,10 @@ func set_drive_input(throttle_input: float, steering_input: float):
 	steering = steering_input
 
 
-@rpc("any_peer", "reliable")
-func request_clear_driver():
-	_clear_driver()
-
-
+@rpc("any_peer", "call_local")
 func _clear_driver():
+	if not multiplayer.is_server(): return
+	
 	current_driver_peer_id = -1
 	throttle = 0.0
 	steering = 0.0

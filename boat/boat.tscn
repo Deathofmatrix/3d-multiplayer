@@ -54,7 +54,6 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 
 [node name="Boat" type="RigidBody3D"]
-transform = Transform3D(-8.73049e-05, 0, -1, 0, 1, 0, 1, 0, -8.73049e-05, 0, 0, 0)
 script = ExtResource("1_jbc2f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
