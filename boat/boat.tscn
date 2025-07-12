@@ -54,6 +54,8 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 
 [node name="Boat" type="RigidBody3D"]
+mass = 100.0
+gravity_scale = 0.5
 script = ExtResource("1_jbc2f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
