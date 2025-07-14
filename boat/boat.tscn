@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://btlyoo23b6r12"]
+[gd_scene load_steps=16 format=3 uid="uid://btlyoo23b6r12"]
 
 [ext_resource type="Script" uid="uid://p5akh8ts3i7c" path="res://boat/boat.gd" id="1_jbc2f"]
 [ext_resource type="Script" uid="uid://dq15jugln2akt" path="res://boat/motor.gd" id="2_enlnh"]
+[ext_resource type="Script" uid="uid://bmspxwttmgg6l" path="res://boat/floatable.gd" id="2_ml88t"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_0vcqt"]
 size = Vector3(4, 0.2, 3)
@@ -55,51 +56,54 @@ properties/4/replication_mode = 1
 
 [node name="Boat" type="RigidBody3D"]
 mass = 100.0
-gravity_scale = 0.5
 script = ExtResource("1_jbc2f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05924, 0.00408459, 0.013758)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0592401, 0.00408459, 0.013758)
 mesh = SubResource("BoxMesh_0vcqt")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02096, 0, -0.000176439)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0209601, 0, -0.000176439)
 shape = SubResource("ConvexPolygonShape3D_0vcqt")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.3714e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.3714e-08, 1.9108e-15, 5.06256, 0.201804, 0.013758)
+transform = Transform3D(-4.3714e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.3714e-08, 1.9108e-15, 3.06256, 0.201804, 0.013758)
 mesh = SubResource("PrismMesh_enlnh")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.3714e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.3714e-08, 1.9108e-15, 5.02428, 0.19772, -0.000176439)
+transform = Transform3D(-4.3714e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.3714e-08, 1.9108e-15, 3.02428, 0.19772, -0.000176439)
 shape = SubResource("ConvexPolygonShape3D_jbc2f")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119876, 0.204085, 0.013758)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88012, 0.204085, 0.013758)
 mesh = SubResource("BoxMesh_vvssr")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0815962, 0.2, -0.000176439)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9184, 0.2, -0.000176439)
 shape = SubResource("ConvexPolygonShape3D_enlnh")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 2.06332, 0.204085, 1.46144)
+transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 0.0633199, 0.204085, 1.46144)
 mesh = SubResource("BoxMesh_ltyy5")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 2.02504, 0.2, 1.4475)
+transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 0.0250399, 0.2, 1.4475)
 shape = SubResource("ConvexPolygonShape3D_ml88t")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 2.05733, 0.204085, -1.43434)
+transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 0.0573299, 0.204085, -1.43434)
 mesh = SubResource("BoxMesh_ltyy5")
 
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 2.01904, 0.2, -1.44828)
+transform = Transform3D(-4.3714e-08, 0, 1, 0, 1, 0, -1, 0, -4.3714e-08, 0.0190401, 0.2, -1.44828)
 shape = SubResource("ConvexPolygonShape3D_vvssr")
 
+[node name="Floatable" type="Node" parent="." node_paths=PackedStringArray("rigid_body")]
+script = ExtResource("2_ml88t")
+rigid_body = NodePath("..")
+
 [node name="Motor" type="Area3D" parent="." groups=["interactable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.175466, 0.0557103, -0.000176439)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.82453, 0.0557103, -0.000176439)
 script = ExtResource("2_enlnh")
 
 [node name="interact point" type="MeshInstance3D" parent="Motor"]

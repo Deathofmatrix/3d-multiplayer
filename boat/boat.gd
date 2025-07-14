@@ -98,7 +98,8 @@ func _physics_process(delta):
 		current_speed = move_toward(current_speed, throttle * max_speed, acceleration * delta)
 	
 	var forward = transform.basis.x
-	linear_velocity = forward * current_speed
+	#linear_velocity = forward * current_speed
+	apply_central_force(forward * current_speed * mass)
 	
 	if current_driver_peer_id != -1:
 		var angle = steering * turn_speed * delta
