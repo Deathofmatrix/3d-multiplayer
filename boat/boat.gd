@@ -1,9 +1,12 @@
 extends RigidBody3D
 class_name Boat
 
-@export var acceleration := 4.0
-@export var max_speed := 10.0
-@export var turn_speed := 1.5
+@export var acceleration := 5.0
+@export var max_speed := 15.0
+@export var turn_speed := 10.0
+@export var drag_coefficient := 0.95
+@export var water_resistance := 2.0
+
 @export var current_driver_peer_id: int = -1
 
 var throttle := 0.0
@@ -95,11 +98,16 @@ func _physics_process(delta):
 	if abs(throttle) < 0.01:
 		current_speed = move_toward(current_speed, 0.0, acceleration * delta)
 	else:
-		current_speed = move_toward(current_speed, throttle * max_speed, acceleration * delta)
+		var target_speed = throttle * max_speed
+		current_speed = move_toward(current_speed, target_speed, acceleration * delta)
 	
 	var forward = transform.basis.x
-	apply_central_force(forward * current_speed * mass)
+	var movement_force = forward * current_speed * mass
+	
+	var resistance_force = -linear_velocity * water_resistance
+	apply_central_force(movement_force + resistance_force)
 	
 	if current_driver_peer_id != -1:
-		var angle = steering * turn_speed * delta
-		rotate_y(angle)
+		var steering_effectiveness = abs(current_speed) / max_speed
+		var torque_amount = steering * turn_speed * steering_effectiveness * mass
+		apply_torque(Vector3.UP * torque_amount)

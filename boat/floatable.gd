@@ -6,8 +6,8 @@ class_name Floatable
 
 @export_category("Variables")
 @export var float_force: float = 1.0
-@export var water_drag: float = 0.05
-@export var water_angular_drag: float = 0.05
+@export var water_drag: float = 0.95
+@export var water_angular_drag: float = 0.5
 
 var float_points: Array
 
@@ -24,19 +24,18 @@ func _physics_process(delta: float) -> void:
 	
 	for point in float_points:
 		print("point g pos ", point.global_position)
-		var depth = water_height - point.global_position.y
-		if depth > 0:
+		#var depth = water_height - point.global_position.y
+		var height = point.global_position.y
+		if height < water_height:
 			submerged_count += 1
-			var force = float_force * gravity * depth * rigid_body.mass
-			total_force += force
-			rigid_body.apply_force(Vector3.UP * force, point.global_position - rigid_body.global_position)
-	
-	if submerged_count > 0:
-		rigid_body.linear_velocity *= (1.0 - water_drag)
-		rigid_body.angular_velocity *= (1.0 - water_angular_drag)
-	
+			
+			var buoyancy = clamp((water_height - height) * rigid_body.mass / 1, 0, 1 * rigid_body.mass)
+			
+			rigid_body.apply_force(Vector3(0, gravity * buoyancy, 0), point.global_position - rigid_body.position)
+			rigid_body.apply_central_force(buoyancy * -rigid_body.linear_velocity * water_drag)
+			rigid_body.apply_torque(buoyancy * -rigid_body.angular_velocity * water_angular_drag)
 	
 	print("Submerged points: ", submerged_count)
-	print("Total upward force: ", total_force)
+	#print("Total upward force: ", total_force)
 	print("Gravity force: ", rigid_body.mass * gravity)
 	print("Object Y position: ", rigid_body.global_position.y)
