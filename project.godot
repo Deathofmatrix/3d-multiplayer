@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 PlayerRegistry="*res://autoload/player_registry.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/terrain_3d/plugin.cfg")
+
 [global_group]
 
 interactable=""
