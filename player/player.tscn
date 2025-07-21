@@ -26,6 +26,7 @@ properties/3/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 top_level = true
+collision_mask = 11
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
@@ -47,7 +48,7 @@ script = ExtResource("2_rkbax")
 [node name="InteractRayCast" type="RayCast3D" parent="CameraController/PlayerCamera"]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
 target_position = Vector3(0, 5, 0)
-collision_mask = 15
+collision_mask = 11
 collide_with_areas = true
 
 [node name="CharacterRotationRoot" type="Node3D" parent="."]

@@ -66,6 +66,7 @@ environment = SubResource("Environment_4dugh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TestLevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.224, 0, 0)
+layers = 2
 material_override = SubResource("StandardMaterial3D_c651c")
 mesh = SubResource("BoxMesh_3wy1v")
 
@@ -94,6 +95,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3534, 1, 4)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="TestLevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.497, 0, 0)
+layers = 2
 mesh = SubResource("PlaneMesh_67ri8")
 
 [connection signal="server_created" from="Connection" to="PlayerSpawner" method="_on_server_created"]

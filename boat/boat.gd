@@ -96,12 +96,12 @@ func _physics_process(delta):
 		steering = 0.0
 	
 	if abs(throttle) < 0.01:
-		current_speed = move_toward(current_speed, 0.0, acceleration * delta)
+		current_speed = move_toward(current_speed, 0.0, acceleration * 2 * delta)
 	else:
 		var target_speed = throttle * max_speed
 		current_speed = move_toward(current_speed, target_speed, acceleration * delta)
 	
-	var forward = transform.basis.x
+	var forward = transform.basis.z
 	var movement_force = forward * current_speed * mass
 	
 	var resistance_force = -linear_velocity * water_resistance
