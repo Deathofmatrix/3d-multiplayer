@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://djc4ohjlijivt"]
+
+[ext_resource type="Script" uid="uid://du5x7n6ruy3x2" path="res://package.gd" id="1_wq56p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g2fmh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sgkka"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xm8xd"]
+material = SubResource("StandardMaterial3D_sgkka")
+
+[node name="Package" type="RigidBody3D" groups=["package"]]
+script = ExtResource("1_wq56p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_g2fmh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_xm8xd")
