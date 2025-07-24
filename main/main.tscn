@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://df2rhbwpx0qh0"]
+[gd_scene load_steps=17 format=3 uid="uid://df2rhbwpx0qh0"]
 
 [ext_resource type="Script" uid="uid://eom8s47pqd77" path="res://main/connection.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://l3rko83ulklp" path="res://main/main.gd" id="1_kfbq2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bquh88mq3a01e" path="res://player/player.tscn" id="3_3wy1v"]
 [ext_resource type="Script" uid="uid://bg80j3gpnj2da" path="res://main/spawn_points.gd" id="5_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://btlyoo23b6r12" path="res://boat/boat.tscn" id="7_4dugh"]
+[ext_resource type="PackedScene" uid="uid://djc4ohjlijivt" path="res://packages/package.tscn" id="8_67ri8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3wy1v"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -97,5 +98,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3534, 1, 4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.497, 0, 0)
 layers = 2
 mesh = SubResource("PlaneMesh_67ri8")
+
+[node name="Package" parent="TestLevel" instance=ExtResource("8_67ri8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.68735, 1.24885, -2.19815)
+
+[node name="Package2" parent="TestLevel" instance=ExtResource("8_67ri8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.68735, 1.24885, 0.448889)
 
 [connection signal="server_created" from="Connection" to="PlayerSpawner" method="_on_server_created"]

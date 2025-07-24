@@ -1,5 +1,5 @@
-extends Node3D
 class_name Floatable
+extends Node3D
 
 @export_category("Dependencies")
 @export var rigid_body: RigidBody3D
@@ -23,7 +23,7 @@ func _physics_process(delta: float) -> void:
 	var submerged_count = 0
 	
 	for point in float_points:
-		print("point g pos ", point.global_position)
+		#print("point g pos ", point.global_position)
 		#var depth = water_height - point.global_position.y
 		var height = point.global_position.y
 		if height < water_height:
@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 			rigid_body.apply_central_force(buoyancy * -rigid_body.linear_velocity * water_drag)
 			rigid_body.apply_torque(buoyancy * -rigid_body.angular_velocity * water_angular_drag)
 	
-	print("Submerged points: ", submerged_count)
+	#print("Submerged points: ", submerged_count)
 	#print("Total upward force: ", total_force)
-	print("Gravity force: ", rigid_body.mass * gravity)
-	print("Object Y position: ", rigid_body.global_position.y)
+	#print("Gravity force: ", rigid_body.mass * gravity)
+	#print("Object Y position: ", rigid_body.global_position.y)

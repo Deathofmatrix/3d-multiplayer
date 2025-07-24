@@ -1,5 +1,5 @@
-extends Node3D
 class_name CameraController
+extends Node3D
 
 @export_node_path var player_path : NodePath
 @export var invert_mouse_y := false

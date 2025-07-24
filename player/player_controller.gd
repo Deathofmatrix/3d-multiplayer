@@ -1,5 +1,5 @@
-extends Node
 class_name PlayerController
+extends Node
 
 @export var move_speed := 8.0
 @export var acceleration := 6.0

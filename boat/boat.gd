@@ -1,5 +1,5 @@
-extends RigidBody3D
 class_name Boat
+extends RigidBody3D
 
 @export var acceleration := 5.0
 @export var max_speed := 15.0
@@ -71,7 +71,6 @@ func set_drive_input(throttle_input: float, steering_input: float):
 		print("❌ Invalid sender - Expected: " + str(current_driver_peer_id) + ", Got: " + str(sender_id))
 		return
 	
-	print("✅ Drive input accepted from: " + str(sender_id))
 	throttle = throttle_input
 	steering = steering_input
 

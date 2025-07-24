@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://djc4ohjlijivt"]
+[gd_scene load_steps=6 format=3 uid="uid://djc4ohjlijivt"]
 
-[ext_resource type="Script" uid="uid://du5x7n6ruy3x2" path="res://package.gd" id="1_wq56p"]
+[ext_resource type="Script" uid="uid://du5x7n6ruy3x2" path="res://packages/package.gd" id="1_wq56p"]
+[ext_resource type="Script" uid="uid://bfxpc3580cp15" path="res://packages/orientation_component.gd" id="2_4c35i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g2fmh"]
 
@@ -18,3 +19,8 @@ shape = SubResource("BoxShape3D_g2fmh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_xm8xd")
+
+[node name="ComponentHolder" type="Node3D" parent="."]
+
+[node name="OrientationComponent" type="Node3D" parent="ComponentHolder"]
+script = ExtResource("2_4c35i")

@@ -1,5 +1,5 @@
-extends Node
 class_name PlayerInput
+extends Node
 
 enum Mode { ON_FOOT, DRIVING_BOAT }
 
@@ -51,9 +51,6 @@ func handle_boat_input():
 	var steering = Input.get_axis("move_right", "move_left")
 	
 	if boat_ref:
-		# Add debug info
-		if abs(throttle) > 0.1 or abs(steering) > 0.1:
-			print("Sending boat input - Throttle: " + str(throttle) + ", Steering: " + str(steering))
 		boat_ref.set_drive_input.rpc(throttle, steering)
 
 

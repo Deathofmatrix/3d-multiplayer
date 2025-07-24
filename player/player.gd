@@ -1,5 +1,5 @@
-extends CharacterBody3D
 class_name Player
+extends CharacterBody3D
 
 ## Sync properties
 @export var _position: Vector3
