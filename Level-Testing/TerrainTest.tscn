@@ -1,83 +1,71 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0d58gjyxt2g3"]
+[gd_scene load_steps=6 format=3 uid="uid://b0d58gjyxt2g3"]
 
-[ext_resource type="Texture2D" uid="uid://ddprscrpsofah" path="res://demo/assets/textures/ground037_alb_ht.png" id="1_11adt"]
-[ext_resource type="Texture2D" uid="uid://c1ots7w6i0i1q" path="res://demo/assets/textures/ground037_nrm_rgh.png" id="2_7n6ub"]
+[ext_resource type="Terrain3DMaterial" uid="uid://bpmmr6qqiniqj" path="res://Level-Testing/TerrainTest_Matlist.res" id="1_11adt"]
+[ext_resource type="Terrain3DAssets" uid="uid://g858l0vi8g4g" path="res://Level-Testing/TerrainTest_Assetlist.tres" id="2_7n6ub"]
 
-[sub_resource type="Gradient" id="Gradient_ubrck"]
-offsets = PackedFloat32Array(0.2, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7n6ub"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_rxcml"]
-noise_type = 2
-frequency = 0.03
-cellular_jitter = 3.0
-cellular_return_type = 0
-domain_warp_enabled = true
-domain_warp_type = 1
-domain_warp_amplitude = 50.0
-domain_warp_fractal_type = 2
-domain_warp_fractal_lacunarity = 1.5
-domain_warp_fractal_gain = 1.0
+[sub_resource type="BoxMesh" id="BoxMesh_11adt"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_11adt"]
-seamless = true
-color_ramp = SubResource("Gradient_ubrck")
-noise = SubResource("FastNoiseLite_rxcml")
-
-[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_7n6ub"]
-_shader_parameters = {
-&"bias_distance": 512.0,
-&"blend_sharpness": 0.5,
-&"depth_blur": 0.0,
-&"enable_macro_variation": true,
-&"enable_projection": true,
-&"flat_terrain_normals": false,
-&"macro_variation1": Color(1, 1, 1, 1),
-&"macro_variation2": Color(1, 1, 1, 1),
-&"macro_variation_slope": 0.333,
-&"mipmap_bias": 1.0,
-&"noise1_angle": 0.0,
-&"noise1_offset": Vector2(0.5, 0.5),
-&"noise1_scale": 0.04,
-&"noise2_scale": 0.076,
-&"noise_texture": SubResource("NoiseTexture2D_11adt"),
-&"projection_threshold": 0.8
-}
-show_region_grid = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6ers"]
-transparency = 4
-cull_mode = 2
-vertex_color_use_as_albedo = true
-backlight_enabled = true
-backlight = Color(0.5, 0.5, 0.5, 1)
-distance_fade_mode = 1
-distance_fade_min_distance = 128.0
-distance_fade_max_distance = 96.0
-
-[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_ahu3x"]
-generated_type = 1
-height_offset = 0.5
-material_override = SubResource("StandardMaterial3D_h6ers")
-last_lod = 0
-last_shadow_lod = 0
-lod0_range = 128.0
-
-[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_h6ers"]
-name = "ground037_alb_ht"
-albedo_texture = ExtResource("1_11adt")
-normal_texture = ExtResource("2_7n6ub")
-
-[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_w2v62"]
-mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_ahu3x")])
-texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_h6ers")])
+[sub_resource type="PrismMesh" id="PrismMesh_11adt"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="Terrain3D" type="Terrain3D" parent="."]
-material = SubResource("Terrain3DMaterial_7n6ub")
-assets = SubResource("Terrain3DAssets_w2v62")
-show_grid = true
-show_region_grid = true
+data_directory = "res://Level-Testing"
+material = ExtResource("1_11adt")
+assets = ExtResource("2_7n6ub")
+show_navigation = true
 top_level = true
 metadata/_edit_lock_ = true
+
+[node name="Player" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.6452, 0)
+mesh = SubResource("CapsuleMesh_7n6ub")
+
+[node name="Boat" type="Node" parent="."]
+
+[node name="BoatBase" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(12.1966, 0, 0, 0, 1, 0, 0, 0, 29.2537, 0, 4.10516, 0)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase2" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(12.197, 0, 0, 0, 6.27, 0, 0, 0, 7.308, 0, 7.45124, -11.0182)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase3" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(2.06411, 0, 0, 0, 0.788095, -2.03184, 0, 0.454915, 3.51996, -4.08203, 8.87171, -5.86035)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase4" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(-9.02203e-08, 0.455, 5.60232, 0, 0.788083, -3.2345, -2.064, -1.98887e-08, -2.44885e-07, -0.758001, 6.28421, -3.21517)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase5" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(1.71006, 0, 0, 0, 1, 0, 0, 0, 2.17203, -4.01491, 7.74542, -3.18431)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase6" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(3.10873, 0, 0, 0, 1, 0, 0, 0, 3.58958, 4.59433, 10.9893, -9.29145)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase7" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(1.64912, 0.558898, 0, -5.81159, 0.158595, 0, 0, 0, 28.249, -5.85019, 3.29222, 0.653072)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase8" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(1.64486, -0.559014, 0, 5.81279, 0.158185, 0, 0, 0, 28.249, 6.3848, 3.29222, 0.653072)
+mesh = SubResource("BoxMesh_11adt")
+skeleton = NodePath("../..")
+
+[node name="BoatBase9" type="MeshInstance3D" parent="Boat"]
+transform = Transform3D(14.055, 0, 0, 0, 2.07509, -0.706446, 0, 10.5427, 0.139047, 0.232121, 5.2411, 19.3624)
+mesh = SubResource("PrismMesh_11adt")
+skeleton = NodePath("../..")
